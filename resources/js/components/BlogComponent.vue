@@ -16,12 +16,19 @@
                             <h3>Hi {{user.name}}, welcome to BlogPosts</h3>
                             <p>There are currently no blogs posts available. Get started by posting your first blog.</p>
 
-                            <button class="btn btn-primary mt-3">Post Article</button>
+                            <button @click="openPostModal" class="btn btn-primary mt-3">Post Article</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Post Blog Modal -->
+        <sweet-modal ref="blog_modal">
+            <h4 class="mt-3" slot="title">Post An Article</h4>
+        </sweet-modal>
+        <!--// Post Blog Modal -->
+
     </div>
 </template>
 
@@ -70,7 +77,11 @@
                     .catch(error => {
                         console.log(error)
                     })
+            },
+
+            openPostModal() {
+                this.$refs.blog_modal.open()
             }
-        },
+        }, 
     }
 </script>
