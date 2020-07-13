@@ -1942,11 +1942,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: {},
-      blogs: []
+      blogs: [],
+      form: new Form({
+        blog_title: '',
+        blog_post: ''
+      })
     };
   },
   mounted: function mounted() {
@@ -41039,7 +41061,83 @@ var render = function() {
           "h4",
           { staticClass: "mt-3", attrs: { slot: "title" }, slot: "title" },
           [_vm._v("Post An Article")]
-        )
+        ),
+        _vm._v(" "),
+        _c("form", { attrs: { action: "" } }, [
+          _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("label", [_vm._v("Blog Title")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.blog_title,
+                    expression: "form.blog_title"
+                  }
+                ],
+                staticClass: "form-control",
+                class: { "is-invalid": _vm.form.errors.has("blog_title") },
+                attrs: { type: "text", name: "blog_title" },
+                domProps: { value: _vm.form.blog_title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "blog_title", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("has-error", {
+                attrs: { form: _vm.form, field: "blog_title" }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("label", [_vm._v("Blog Post")]),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.blog_post,
+                    expression: "form.blog_post"
+                  }
+                ],
+                staticClass: "form-control",
+                class: { "is-invalid": _vm.form.errors.has("blog_post") },
+                attrs: { name: "blog_post", cols: "30", rows: "10" },
+                domProps: { value: _vm.form.blog_post },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "blog_post", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("has-error", { attrs: { form: _vm.form, field: "blog_post" } })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Post")])
+          ])
+        ])
       ])
     ],
     1
@@ -53239,6 +53337,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.use(sweet_modal_vue_src_plugin_js__WEBPACK_IMPORTED_MODULE_0__["default"]); // V-Form
 
 
+window.Form = vform__WEBPACK_IMPORTED_MODULE_1__["Form"];
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_1__["HasError"]);
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_1__["AlertError"]);
 /**

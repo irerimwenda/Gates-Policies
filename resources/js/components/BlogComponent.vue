@@ -26,6 +26,24 @@
         <!-- Post Blog Modal -->
         <sweet-modal ref="blog_modal">
             <h4 class="mt-3" slot="title">Post An Article</h4>
+                <form action="">
+                    <div class="form-group">
+                        <label>Blog Title</label>
+                        <input v-model="form.blog_title" type="text"         name="blog_title"
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('blog_title') }">
+                        <has-error :form="form" field="blog_title"></has-error>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blog Post</label>
+                        <textarea v-model="form.blog_post" name="blog_post" cols="30" rows="10" class="form-control" :class="{ 'is-invalid': form.errors.has('blog_post') }"></textarea>
+                        <has-error :form="form" field="blog_post"></has-error>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary">Post</button>
+                    </div>
+                </form>
         </sweet-modal>
         <!--// Post Blog Modal -->
 
@@ -39,6 +57,11 @@
             return {
                 user: {},
                 blogs: [],
+
+                form: new Form({
+                    blog_title: '',
+                    blog_post: '',
+                })
             }
         },
 
