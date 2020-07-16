@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "sweet-modal-vue": "^2.0.0",
-        "vform": "^1.0.1"
+        "vform": "^1.0.1",
+        "vue-loading-overlay": "^3.3.2"
     }
 }

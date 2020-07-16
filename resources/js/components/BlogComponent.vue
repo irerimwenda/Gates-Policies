@@ -26,11 +26,11 @@
         <!-- Post Blog Modal -->
         <sweet-modal ref="blog_modal">
             <h4 class="mt-3" slot="title">Post An Article</h4>
-                <form action="">
+                <form @submit.prevent="saveArticle()" method="POST">
                     <div class="form-group">
                         <label>Blog Title</label>
                         <input v-model="form.blog_title" type="text"         name="blog_title"
-                            class="form-control" :class="{ 'is-invalid': form.errors.has('blog_title') }">
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('blog_title') }" autocomplete="off">
                         <has-error :form="form" field="blog_title"></has-error>
                     </div>
 
@@ -40,8 +40,10 @@
                         <has-error :form="form" field="blog_post"></has-error>
                     </div>
 
-                    <div class="form-group">
-                        <button class="btn btn-primary">Post</button>
+                    <div class="form-group col-md-6">
+                        <button class="btn btn-primary" :disabled="limitCharacters">Post Article</button>
+                        <span class="more-than-200-characters-span"
+                        :style="limitCharacters ? 'display:block' : 'display:none'">(More than 400 characters)</span>
                     </div>
                 </form>
         </sweet-modal>
@@ -57,17 +59,23 @@
             return {
                 user: {},
                 blogs: [],
+                fullPage: false,
 
                 form: new Form({
                     blog_title: '',
                     blog_post: '',
+                    user_id: ''
                 })
             }
         },
 
-        mounted() {
+        created() {
             this.getAuthUser()
             this.getBlogPosts()
+
+            Fire.$on('refreshBlogs', () => {
+                this.getBlogPosts()
+            })
         },
 
         computed: {
@@ -78,6 +86,16 @@
                 else {
                     return false
                 }
+            },
+
+            limitCharacters() {
+                let characters = this.form.blog_post
+                
+                if(characters.length > 400) {
+                    return true
+                } else {
+                    return false
+                }
             }
         },
 
@@ -86,6 +104,7 @@
                 axios.get("api/user")
                     .then(response => {
                         this.user = response.data
+                        this.form.user_id = response.data.id
                     })
                     .catch(error => {
                         console.log(error)
@@ -104,6 +123,29 @@
 
             openPostModal() {
                 this.$refs.blog_modal.open()
+            },
+
+            saveArticle() {
+                this.form.post("api/post-blog-article")
+                    this.form.reset()
+                    this.$refs.blog_modal.close()
+                    
+                    .then(response => {
+                        let loader = this.$loading.show({
+                            container: this.fullPage ? null : this.$refs.formContainer,
+                            canCancel:false,
+                            onCancel: this.onCancel
+                        });
+
+                        setTimeout(() => {
+                            loader.hide()
+                        }, 5000)
+
+                        Fire.$emit('refreshBlogs')
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
             }
         }, 
     }

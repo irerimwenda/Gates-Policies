@@ -17,4 +17,17 @@ class BlogController extends Controller
 
         return response()->json($blogs, 200);
     }
+
+    // Post an article
+    public function postBlogArticle(Request $request) {
+        $validated_data = $this->validate($request, [
+                            'user_id' => 'required',
+                            'blog_title' => 'required',
+                            'blog_post' => 'required',
+                        ]);
+
+        $save_article = Blog::create($validated_data);
+
+        return response()->json($save_article, 201);
+    }
 }
