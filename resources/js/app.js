@@ -27,6 +27,14 @@ Vue.use(Loading, {
     // slots
 });
 
+// Vue Gravatar
+import Gravatar from 'vue-gravatar';
+Vue.component('v-gravatar', Gravatar);
+
+// Vue Moments Ago
+import VueMomentsAgo from 'vue-moments-ago'
+Vue.component('vue-moments-ago', VueMomentsAgo);
+
 // New Vue Instance
 let Fire = new Vue()
 window.Fire = Fire

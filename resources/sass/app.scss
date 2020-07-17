@@ -1,12 +1,12 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 
 // BLOG SECTION
 .no-blogs {
@@ -24,3 +24,99 @@
     line-height: 1;
 }
 
+.sticky-btn {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-right: 50px;
+    margin-bottom: 50px;
+
+    .add-new-post-btn {
+        width: 50px;
+        height: 50px;
+        background-color: $blue;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        outline: none;
+
+    &:hover {
+        background-color: $indigo;
+    }
+
+    i {
+        font-size: 15px;
+        font-weight: 500;
+        color: #fff;
+        }
+    }
+}
+
+.single-blog-box {
+    display: flex;
+    flex-direction: inherit;
+    padding: 20px 10px;
+
+    // &::before {
+    //     content: '';
+    // }
+
+    // &::after {
+    //     content: '';
+    //     position: absolute;
+    //     width: 100%;
+    //     height: 1px;
+    //     background: #333; 
+    //     left: 0;
+    //     margin: 10px 0;
+    // }
+
+    .image-box {
+        width: 15%;
+        text-align: center;
+
+        .gravatar-img img {
+            height: 55px;
+            width: 55px;
+            background-color: $cyan;
+            border: 1px solid #333;
+            border-radius: 50%;
+        }
+    }
+
+    .blog-content {
+        width: 70%;
+        padding-right: 20px;
+
+        h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        span {
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+    }
+
+    .blog-time {
+        width: 15%;
+        text-align: right;
+        padding-right: 10px;
+
+        small {
+            display: inline-flex;
+            flex-direction: row;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            background: #A9A9A9;
+            border-radius: 50%;
+            margin-top: 6px;
+            margin-right: 5px;
+        }
+    }
+}

@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Nunito);@import url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);@charset "UTF-8";
 
 /*!
  * Bootstrap v4.5.0 (https://getbootstrap.com/)
@@ -10941,5 +10941,88 @@ a.text-dark:focus {
   font-weight: 600;
   margin-top: 8px;
   line-height: 1;
+}
+
+.sticky-btn {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-right: 50px;
+  margin-bottom: 50px;
+}
+
+.sticky-btn .add-new-post-btn {
+  width: 50px;
+  height: 50px;
+  background-color: #3490dc;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  outline: none;
+}
+
+.sticky-btn .add-new-post-btn:hover {
+  background-color: #6574cd;
+}
+
+.sticky-btn .add-new-post-btn i {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.single-blog-box {
+  display: flex;
+  flex-direction: inherit;
+  padding: 20px 10px;
+}
+
+.single-blog-box .image-box {
+  width: 15%;
+  text-align: center;
+}
+
+.single-blog-box .image-box .gravatar-img img {
+  height: 55px;
+  width: 55px;
+  background-color: #6cb2eb;
+  border: 1px solid #333;
+  border-radius: 50%;
+}
+
+.single-blog-box .blog-content {
+  width: 70%;
+  padding-right: 20px;
+}
+
+.single-blog-box .blog-content h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.single-blog-box .blog-content span {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.single-blog-box .blog-time {
+  width: 15%;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.single-blog-box .blog-time small {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.single-blog-box .blog-time .dot {
+  width: 5px;
+  height: 5px;
+  background: #A9A9A9;
+  border-radius: 50%;
+  margin-top: 6px;
+  margin-right: 5px;
 }
 
