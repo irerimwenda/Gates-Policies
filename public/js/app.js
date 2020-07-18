@@ -2617,6 +2617,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     displayOptions: function displayOptions() {},
     openPostModal: function openPostModal() {
+      this.form.reset();
       this.$refs.blog_modal.open();
     },
     editPost: function editPost(blog) {

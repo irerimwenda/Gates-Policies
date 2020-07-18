@@ -718,6 +718,7 @@ export default {
     },
 
     openPostModal() {
+      this.form.reset()
       this.$refs.blog_modal.open();
     },
 
