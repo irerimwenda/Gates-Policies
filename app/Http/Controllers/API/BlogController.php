@@ -13,7 +13,7 @@ class BlogController extends Controller
     public function getBlogs() {
 
         // Get all blogs from DB
-        $blogs = Blog::all();
+        $blogs = Blog::with('user')->latest()->get();
 
         return response()->json($blogs, 200);
     }

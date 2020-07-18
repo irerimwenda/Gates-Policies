@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Vue Router -->
+    <router-view :key="$route.fullPath"></router-view>
+
 </head>
 <body>
     <div id="app">

@@ -28,6 +28,7 @@
         "vform": "^1.0.1",
         "vue-gravatar": "^1.3.1",
         "vue-loading-overlay": "^3.3.2",
-        "vue-moments-ago": "^0.2.0"
+        "vue-moments-ago": "^0.2.0",
+        "vue-router": "^3.3.4"
     }
 }

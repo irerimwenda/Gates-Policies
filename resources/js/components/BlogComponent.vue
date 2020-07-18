@@ -5,26 +5,92 @@
         <div class="card">
           <div class="blogs-container" v-if="blogsExist">
             <div class="single-blog-box" v-for="blog in blogs" :key="blog.id">
-              <div class="image-box">
-                <div class="gravatar-img">
+              <div class="blog-box-div" @click="openSelectedBlog(blog.id)">
+                <div class="image-box">
+                  <div class="gravatar-img">
                     <v-gravatar :size="50" email="somebody@somewhere.com" />
+                  </div>
+                </div>
+
+                <div class="blog-content">
+                  <div class="blog-user">
+                    <div class="user-title">
+                      <span>{{blog.user.name}}</span>
+                    </div>
+
+                    <div class="user-name">
+                      <span>@{{blog.user.email | filterUsername}}</span>
+                    </div>
+
+                    <div class="blog-time">
+                      <small>
+                        <div class="dot"></div>
+                        <vue-moments-ago prefix suffix :date="blog.created_at" lang="en" />
+                      </small>
+                    </div>
+                  </div>
+
+                  <h5>{{blog.blog_title}}</h5>
+                  <span>{{blog.blog_post}}</span>
+                </div>
+
+                <div class="actions">
+                  <span class="dropdown-arrow-svg" @click="displayOptions()">
+                   <svg
+                      version="1.1"
+                      id="Capa_1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      x="0px"
+                      y="0px"
+                      height="15"
+                      width="15"
+                      viewBox="0 0 490.688 490.688"
+                      style="enable-background:new 0 0 490.688 490.688;"
+                      xml:space="preserve"
+                    >
+                      <path
+                        style="fill:#FFC107;"
+                        d="M472.328,120.529L245.213,347.665L18.098,120.529c-4.237-4.093-10.99-3.975-15.083,0.262
+                        c-3.992,4.134-3.992,10.687,0,14.82l234.667,234.667c4.165,4.164,10.917,4.164,15.083,0l234.667-234.667
+                        c4.237-4.093,4.354-10.845,0.262-15.083c-4.093-4.237-10.845-4.354-15.083-0.262c-0.089,0.086-0.176,0.173-0.262,0.262
+                        L472.328,120.529z"
+                      />
+                        <path
+                                              d="M245.213,373.415c-2.831,0.005-5.548-1.115-7.552-3.115L2.994,135.633c-4.093-4.237-3.975-10.99,0.262-15.083
+                        c4.134-3.992,10.687-3.992,14.82,0l227.136,227.115l227.115-227.136c4.093-4.237,10.845-4.354,15.083-0.262
+                        c4.237,4.093,4.354,10.845,0.262,15.083c-0.086,0.089-0.173,0.176-0.262,0.262L252.744,370.279
+                        C250.748,372.281,248.039,373.408,245.213,373.415z"
+                      />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                      <g />
+                    </svg>
+                  </span>
+
+                  <div class="options-card">
+                    <ul>
+                      <li><i class="fa fa-pencil"></i> <span>Edit</span></li>
+                      <li><i class="fa fa-trash-o"></i> <span>Delete</span></li>
+                      <li><i class="fa fa-share-alt"></i> <span>Share</span></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 
-              <div class="blog-content">
-                <h4>{{blog.blog_title}}</h4>
-                <span>{{blog.blog_post}}</span>
-              </div>
-
-              <div class="blog-time">
-                <small>
-                    <div class="dot"></div>
-                    <vue-moments-ago prefix="" suffix="" :date="blog.created_at" lang="en"/>
-                </small>
-              </div>
-
-              <hr>
-
+              <!-- <hr v-show="!lastBlog"> -->
             </div>
 
             <div class="sticky-btn">
@@ -578,6 +644,9 @@ export default {
       user: {},
       blogs: [],
       fullPage: false,
+      username_email: "",
+      username: "",
+      lastBlog: false,
 
       form: new Form({
         blog_title: "",
@@ -612,7 +681,7 @@ export default {
       } else {
         return false;
       }
-    }
+    },
   },
 
   methods: {
@@ -622,6 +691,7 @@ export default {
         .then(response => {
           this.user = response.data;
           this.form.user_id = response.data.id;
+          this.username_email = response.data.email;
         })
         .catch(error => {
           console.log(error);
@@ -639,12 +709,17 @@ export default {
         });
     },
 
+    displayOptions() {
+
+    },
+
     openPostModal() {
       this.$refs.blog_modal.open();
     },
 
     saveArticle() {
-      this.form.post("api/post-blog-article")
+      this.form
+        .post("api/post-blog-article")
         .then(response => {
           let loader = this.$loading.show({
             container: this.fullPage ? null : this.$refs.formContainer,
@@ -659,12 +734,18 @@ export default {
           Fire.$emit("refreshBlogs");
 
           this.form.reset();
-          this.$refs.blog_modal.close()
-
+          this.$refs.blog_modal.close();
         })
         .catch(error => {
           console.log(error);
         });
+    },
+
+    openSelectedBlog(id) {
+      this.$router.push({
+        name: "blog",
+        params: { id }
+      });
     }
   }
 };

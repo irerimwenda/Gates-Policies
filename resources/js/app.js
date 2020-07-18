@@ -35,6 +35,32 @@ Vue.component('v-gravatar', Gravatar);
 import VueMomentsAgo from 'vue-moments-ago'
 Vue.component('vue-moments-ago', VueMomentsAgo);
 
+// Vue Router
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
+// Vue Router Routes
+const routes = [
+    { 
+        path: '/blog/:id',
+        name: 'blog',
+        component: require('./components/SingleBlog.vue').default,
+        props: true
+    },
+  ]
+
+const router = new VueRouter({
+    mode: 'history',
+    routes 
+})
+
+// Vue Filters
+Vue.filter('filterUsername', (value)=> {
+    if(!value) return ''
+    value = value.toString()
+    return value.split("@")[0]
+})
+
 // New Vue Instance
 let Fire = new Vue()
 window.Fire = Fire
@@ -50,4 +76,5 @@ Vue.component('blog-component', require('./components/BlogComponent.vue').defaul
 // Vue Instance
 const app = new Vue({
     el: '#app',
+    router,
 });
