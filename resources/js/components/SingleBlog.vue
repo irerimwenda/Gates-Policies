@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+
+    <!-- Vue Router -->
+    <router-view :key="$route.fullPath"></router-view>
+
       my blog
   </div>
 </template>

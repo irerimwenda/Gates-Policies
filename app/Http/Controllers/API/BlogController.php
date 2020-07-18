@@ -33,6 +33,9 @@ class BlogController extends Controller
 
     // Update an article
     public function updateBlogArticle(Request $request, $id) {
+
+        // $this->authorize('update', $id);
+
         $validated_data = $this->validate($request, [
             'user_id' => 'required',
             'blog_title' => 'required',
