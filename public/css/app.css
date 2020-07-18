@@ -11088,6 +11088,12 @@ a.text-dark:focus {
   border-bottom: none;
 }
 
+.single-blog-box .actions .options-card ul li:hover {
+  background: #778899;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
 .single-blog-box .actions .options-card ul li i {
   color: #A9A9A9;
   margin-right: 10px;

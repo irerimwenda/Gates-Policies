@@ -30,4 +30,17 @@ class BlogController extends Controller
 
         return response()->json($save_article, 201);
     }
+
+    // Update an article
+    public function updateBlogArticle(Request $request, $id) {
+        $validated_data = $this->validate($request, [
+            'user_id' => 'required',
+            'blog_title' => 'required',
+            'blog_post' => 'required',
+        ]);
+
+        $update_article = Blog::findOrFail($id)->update($validated_data);
+
+        return response()->json($validated_data, 200);
+    }
 }

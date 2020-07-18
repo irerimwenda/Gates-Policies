@@ -2547,6 +2547,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2556,7 +2558,9 @@ __webpack_require__.r(__webpack_exports__);
       username_email: "",
       username: "",
       lastBlog: false,
+      editmode: false,
       form: new Form({
+        id: "",
         blog_title: "",
         blog_post: "",
         user_id: ""
@@ -2615,6 +2619,11 @@ __webpack_require__.r(__webpack_exports__);
     openPostModal: function openPostModal() {
       this.$refs.blog_modal.open();
     },
+    editPost: function editPost(blog) {
+      this.editmode = true;
+      this.$refs.blog_modal.open();
+      this.form.fill(blog);
+    },
     saveArticle: function saveArticle() {
       var _this4 = this;
 
@@ -2627,12 +2636,36 @@ __webpack_require__.r(__webpack_exports__);
 
         setTimeout(function () {
           loader.hide();
-        }, 3000);
+        }, 1000);
         Fire.$emit("refreshBlogs");
 
         _this4.form.reset();
 
         _this4.$refs.blog_modal.close();
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    updateArticle: function updateArticle() {
+      var _this5 = this;
+
+      this.form.put("api/update-blog-article/" + this.form.id).then(function (response) {
+        var loader = _this5.$loading.show({
+          container: _this5.fullPage ? null : _this5.$refs.formContainer,
+          canCancel: false,
+          onCancel: _this5.onCancel
+        });
+
+        setTimeout(function () {
+          loader.hide();
+        }, 1000);
+        Fire.$emit("refreshBlogs");
+
+        _this5.form.reset();
+
+        _this5.editmode = false;
+
+        _this5.$refs.blog_modal.close();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2644,7 +2677,9 @@ __webpack_require__.r(__webpack_exports__);
           id: id
         }
       });
-    }
+    },
+    deletePost: function deletePost(id) {},
+    sharePost: function sharePost(blog) {}
   }
 });
 
@@ -63001,164 +63036,205 @@ var render = function() {
                         "div",
                         { key: blog.id, staticClass: "single-blog-box" },
                         [
-                          _c(
-                            "div",
-                            {
-                              staticClass: "blog-box-div",
-                              on: {
-                                click: function($event) {
-                                  return _vm.openSelectedBlog(blog.id)
-                                }
-                              }
-                            },
-                            [
-                              _c("div", { staticClass: "image-box" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "gravatar-img" },
-                                  [
-                                    _c("v-gravatar", {
-                                      attrs: {
-                                        size: 50,
-                                        email: "somebody@somewhere.com"
-                                      }
-                                    })
-                                  ],
-                                  1
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "blog-content" }, [
-                                _c("div", { staticClass: "blog-user" }, [
-                                  _c("div", { staticClass: "user-title" }, [
-                                    _c("span", [_vm._v(_vm._s(blog.user.name))])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "user-name" }, [
-                                    _c("span", [
-                                      _vm._v(
-                                        "@" +
-                                          _vm._s(
-                                            _vm._f("filterUsername")(
-                                              blog.user.email
-                                            )
+                          _c("div", { staticClass: "blog-box-div" }, [
+                            _c("div", { staticClass: "image-box" }, [
+                              _c(
+                                "div",
+                                { staticClass: "gravatar-img" },
+                                [
+                                  _c("v-gravatar", {
+                                    attrs: {
+                                      size: 50,
+                                      email: "somebody@somewhere.com"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "blog-content" }, [
+                              _c("div", { staticClass: "blog-user" }, [
+                                _c("div", { staticClass: "user-title" }, [
+                                  _c("span", [_vm._v(_vm._s(blog.user.name))])
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "user-name" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      "@" +
+                                        _vm._s(
+                                          _vm._f("filterUsername")(
+                                            blog.user.email
                                           )
-                                      )
-                                    ])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "blog-time" }, [
-                                    _c(
-                                      "small",
-                                      [
-                                        _c("div", { staticClass: "dot" }),
-                                        _vm._v(" "),
-                                        _c("vue-moments-ago", {
-                                          attrs: {
-                                            prefix: "",
-                                            suffix: "",
-                                            date: blog.created_at,
-                                            lang: "en"
-                                          }
-                                        })
-                                      ],
-                                      1
+                                        )
                                     )
                                   ])
                                 ]),
                                 _vm._v(" "),
-                                _c("h5", [_vm._v(_vm._s(blog.blog_title))]),
-                                _vm._v(" "),
-                                _c("span", [_vm._v(_vm._s(blog.blog_post))])
+                                _c("div", { staticClass: "blog-time" }, [
+                                  _c(
+                                    "small",
+                                    [
+                                      _c("div", { staticClass: "dot" }),
+                                      _vm._v(" "),
+                                      _c("vue-moments-ago", {
+                                        attrs: {
+                                          prefix: "",
+                                          suffix: "",
+                                          date: blog.created_at,
+                                          lang: "en"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ])
                               ]),
                               _vm._v(" "),
-                              _c("div", { staticClass: "actions" }, [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass: "dropdown-arrow-svg",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.displayOptions()
-                                      }
+                              _c("h5", [_vm._v(_vm._s(blog.blog_title))]),
+                              _vm._v(" "),
+                              _c("span", [_vm._v(_vm._s(blog.blog_post))])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "actions" }, [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "dropdown-arrow-svg",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.displayOptions()
                                     }
-                                  },
-                                  [
-                                    _c(
-                                      "svg",
-                                      {
-                                        staticStyle: {
-                                          "enable-background":
-                                            "new 0 0 490.688 490.688"
-                                        },
-                                        attrs: {
-                                          version: "1.1",
-                                          id: "Capa_1",
-                                          xmlns: "http://www.w3.org/2000/svg",
-                                          "xmlns:xlink":
-                                            "http://www.w3.org/1999/xlink",
-                                          x: "0px",
-                                          y: "0px",
-                                          height: "15",
-                                          width: "15",
-                                          viewBox: "0 0 490.688 490.688",
-                                          "xml:space": "preserve"
-                                        }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticStyle: {
+                                        "enable-background":
+                                          "new 0 0 490.688 490.688"
                                       },
-                                      [
-                                        _c("path", {
-                                          staticStyle: { fill: "#FFC107" },
-                                          attrs: {
-                                            d:
-                                              "M472.328,120.529L245.213,347.665L18.098,120.529c-4.237-4.093-10.99-3.975-15.083,0.262\n                      c-3.992,4.134-3.992,10.687,0,14.82l234.667,234.667c4.165,4.164,10.917,4.164,15.083,0l234.667-234.667\n                      c4.237-4.093,4.354-10.845,0.262-15.083c-4.093-4.237-10.845-4.354-15.083-0.262c-0.089,0.086-0.176,0.173-0.262,0.262\n                      L472.328,120.529z"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("path", {
-                                          attrs: {
-                                            d:
-                                              "M245.213,373.415c-2.831,0.005-5.548-1.115-7.552-3.115L2.994,135.633c-4.093-4.237-3.975-10.99,0.262-15.083\n                      c4.134-3.992,10.687-3.992,14.82,0l227.136,227.115l227.115-227.136c4.093-4.237,10.845-4.354,15.083-0.262\n                      c4.237,4.093,4.354,10.845,0.262,15.083c-0.086,0.089-0.173,0.176-0.262,0.262L252.744,370.279\n                      C250.748,372.281,248.039,373.408,245.213,373.415z"
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g"),
-                                        _vm._v(" "),
-                                        _c("g")
-                                      ]
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _vm._m(0, true)
+                                      attrs: {
+                                        version: "1.1",
+                                        id: "Capa_1",
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        "xmlns:xlink":
+                                          "http://www.w3.org/1999/xlink",
+                                        x: "0px",
+                                        y: "0px",
+                                        height: "15",
+                                        width: "15",
+                                        viewBox: "0 0 490.688 490.688",
+                                        "xml:space": "preserve"
+                                      }
+                                    },
+                                    [
+                                      _c("path", {
+                                        staticStyle: { fill: "#FFC107" },
+                                        attrs: {
+                                          d:
+                                            "M472.328,120.529L245.213,347.665L18.098,120.529c-4.237-4.093-10.99-3.975-15.083,0.262\n                      c-3.992,4.134-3.992,10.687,0,14.82l234.667,234.667c4.165,4.164,10.917,4.164,15.083,0l234.667-234.667\n                      c4.237-4.093,4.354-10.845,0.262-15.083c-4.093-4.237-10.845-4.354-15.083-0.262c-0.089,0.086-0.176,0.173-0.262,0.262\n                      L472.328,120.529z"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("path", {
+                                        attrs: {
+                                          d:
+                                            "M245.213,373.415c-2.831,0.005-5.548-1.115-7.552-3.115L2.994,135.633c-4.093-4.237-3.975-10.99,0.262-15.083\n                      c4.134-3.992,10.687-3.992,14.82,0l227.136,227.115l227.115-227.136c4.093-4.237,10.845-4.354,15.083-0.262\n                      c4.237,4.093,4.354,10.845,0.262,15.083c-0.086,0.089-0.173,0.176-0.262,0.262L252.744,370.279\n                      C250.748,372.281,248.039,373.408,245.213,373.415z"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g"),
+                                      _vm._v(" "),
+                                      _c("g")
+                                    ]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "options-card" }, [
+                                _c("ul", [
+                                  _c(
+                                    "li",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.editPost(blog)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", { staticClass: "fa fa-pencil" }),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Edit")])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "li",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deletePost(blog.id)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", { staticClass: "fa fa-trash-o" }),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Delete")])
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "li",
+                                    {
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.sharePost(blog)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fa fa-share-alt"
+                                      }),
+                                      _vm._v(" "),
+                                      _c("span", [_vm._v("Share")])
+                                    ]
+                                  )
+                                ])
                               ])
-                            ]
-                          )
+                            ])
+                          ])
                         ]
                       )
                     }),
@@ -64043,20 +64119,25 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("sweet-modal", { ref: "blog_modal" }, [
-        _c(
-          "h4",
-          { staticClass: "mt-3", attrs: { slot: "title" }, slot: "title" },
-          [_vm._v("Post An Article")]
-        ),
+        _vm.editmode
+          ? _c(
+              "h4",
+              { staticClass: "mt-3", attrs: { slot: "title" }, slot: "title" },
+              [_vm._v("Edit Article")]
+            )
+          : _c(
+              "h4",
+              { staticClass: "mt-3", attrs: { slot: "title" }, slot: "title" },
+              [_vm._v("Post An Article")]
+            ),
         _vm._v(" "),
         _c(
           "form",
           {
-            attrs: { method: "POST" },
             on: {
               submit: function($event) {
                 $event.preventDefault()
-                return _vm.saveArticle()
+                _vm.editmode ? _vm.updateArticle() : _vm.saveArticle()
               }
             }
           },
@@ -64138,14 +64219,23 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "form-group col-md-6" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { disabled: _vm.limitCharacters }
-                },
-                [_vm._v("Post Article")]
-              ),
+              _vm.editmode
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: { disabled: _vm.limitCharacters }
+                    },
+                    [_vm._v("Update Article")]
+                  )
+                : _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { disabled: _vm.limitCharacters }
+                    },
+                    [_vm._v("Post Article")]
+                  ),
               _vm._v(" "),
               _c(
                 "span",
@@ -64163,34 +64253,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "options-card" }, [
-      _c("ul", [
-        _c("li", [
-          _c("i", { staticClass: "fa fa-pencil" }),
-          _vm._v(" "),
-          _c("span", [_vm._v("Edit")])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("i", { staticClass: "fa fa-trash-o" }),
-          _vm._v(" "),
-          _c("span", [_vm._v("Delete")])
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c("i", { staticClass: "fa fa-share-alt" }),
-          _vm._v(" "),
-          _c("span", [_vm._v("Share")])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

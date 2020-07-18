@@ -5,7 +5,7 @@
         <div class="card">
           <div class="blogs-container" v-if="blogsExist">
             <div class="single-blog-box" v-for="blog in blogs" :key="blog.id">
-              <div class="blog-box-div" @click="openSelectedBlog(blog.id)">
+              <div class="blog-box-div"><!--@click="openSelectedBlog(blog.id)"-->
                 <div class="image-box">
                   <div class="gravatar-img">
                     <v-gravatar :size="50" email="somebody@somewhere.com" />
@@ -82,9 +82,9 @@
 
                   <div class="options-card">
                     <ul>
-                      <li><i class="fa fa-pencil"></i> <span>Edit</span></li>
-                      <li><i class="fa fa-trash-o"></i> <span>Delete</span></li>
-                      <li><i class="fa fa-share-alt"></i> <span>Share</span></li>
+                      <li @click="editPost(blog)"><i class="fa fa-pencil"></i> <span>Edit</span></li>
+                      <li @click="deletePost(blog.id)"><i class="fa fa-trash-o"></i> <span>Delete</span></li>
+                      <li @click="sharePost(blog)"><i class="fa fa-share-alt"></i> <span>Share</span></li>
                     </ul>
                   </div>
                 </div>
@@ -596,8 +596,9 @@
 
     <!-- Post Blog Modal -->
     <sweet-modal ref="blog_modal">
-      <h4 class="mt-3" slot="title">Post An Article</h4>
-      <form @submit.prevent="saveArticle()" method="POST">
+      <h4 v-if="editmode" class="mt-3" slot="title">Edit Article</h4>
+      <h4 v-else class="mt-3" slot="title">Post An Article</h4>
+      <form @submit.prevent="editmode ? updateArticle() : saveArticle()">
         <div class="form-group">
           <label>Blog Title</label>
           <input
@@ -625,7 +626,8 @@
         </div>
 
         <div class="form-group col-md-6">
-          <button class="btn btn-primary" :disabled="limitCharacters">Post Article</button>
+          <button v-if="editmode" class="btn btn-success" :disabled="limitCharacters">Update Article</button>
+          <button v-else class="btn btn-primary" :disabled="limitCharacters">Post Article</button>
           <span
             class="more-than-200-characters-span"
             :style="limitCharacters ? 'display:block' : 'display:none'"
@@ -647,8 +649,10 @@ export default {
       username_email: "",
       username: "",
       lastBlog: false,
+      editmode: false,
 
       form: new Form({
+        id: "",
         blog_title: "",
         blog_post: "",
         user_id: ""
@@ -717,6 +721,12 @@ export default {
       this.$refs.blog_modal.open();
     },
 
+    editPost(blog) {
+      this.editmode = true
+      this.$refs.blog_modal.open();
+      this.form.fill(blog)
+    },  
+
     saveArticle() {
       this.form
         .post("api/post-blog-article")
@@ -729,7 +739,7 @@ export default {
 
           setTimeout(() => {
             loader.hide();
-          }, 3000);
+          }, 1000);
 
           Fire.$emit("refreshBlogs");
 
@@ -741,11 +751,44 @@ export default {
         });
     },
 
+    updateArticle() {
+      this.form
+      .put("api/update-blog-article/" + this.form.id)
+      .then(response => {
+        let loader = this.$loading.show({
+          container: this.fullPage ? null : this.$refs.formContainer,
+          canCancel: false,
+          onCancel: this.onCancel
+        });
+
+        setTimeout(() => {
+          loader.hide()
+        }, 1000);
+
+        Fire.$emit("refreshBlogs");
+
+        this.form.reset();
+        this.editmode = false
+        this.$refs.blog_modal.close()
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     openSelectedBlog(id) {
       this.$router.push({
         name: "blog",
         params: { id }
       });
+    },
+
+    deletePost(id) {
+
+    },
+
+    sharePost(blog) {
+
     }
   }
 };

@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('get-all-blog-posts', 'API\BlogController@getBlogs');
 Route::post('post-blog-article', 'API\BlogController@postBlogArticle');
+Route::put('update-blog-article/{id}', 'API\BlogController@updateBlogArticle');
