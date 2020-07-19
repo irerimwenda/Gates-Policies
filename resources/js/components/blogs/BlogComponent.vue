@@ -1,9 +1,9 @@
 <template>
-  <div class="main-blog-container">
+  <div class="container">
     <div class="card">
       <div class="blogs-container" v-if="blogsExist">
         <div class="single-blog-box" v-for="blog in blogs" :key="blog.id">
-          <div class="blog-box-div"><!--@click="openSelectedBlog(blog.id)"-->
+          <div class="blog-box-div" @click="openSelectedBlog(blog)"><!--@click="openSelectedBlog(blog.id)"-->
             <div class="image-box">
               <div class="gravatar-img">
                 <v-gravatar :size="50" email="somebody@somewhere.com" />
@@ -13,7 +13,7 @@
             <div class="blog-content">
               <div class="blog-user">
                 <div class="user-title">
-                  <router-link :to="{ path: '/blog/'+ blog.id}"><span>{{blog.user.name}}</span></router-link>
+                 <span>{{blog.user.name}}</span>
                 </div>
 
                 <div class="user-name">
@@ -719,10 +719,12 @@ export default {
     },
 
     openPostModal() {
+      this.form.clear()
       this.$refs.blog_modal.open();
     },
 
     editPost(blog) {
+      this.form.clear()
       this.editmode = true;
       this.$refs.blog_modal.open();
       this.form.fill(blog);
@@ -777,10 +779,11 @@ export default {
         });
     },
 
-    openSelectedBlog(id) {
+    openSelectedBlog(blog) {
       this.$router.push({
+        path: '/blog/' + blog.id,
         name: "blog",
-        params: { id }
+        params: { blog }
       });
     },
 

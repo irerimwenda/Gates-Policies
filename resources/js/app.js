@@ -40,11 +40,17 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // Vue Router Routes
-const routes = [
+let routes = [
+    { 
+        path: '/home',
+        name: 'home',
+        component: require('./components/home/HomeContainer').default,
+        props: true
+    },
     { 
         path: '/blog/:id',
         name: 'blog',
-        component: require('./components/SingleBlog.vue').default,
+        component: require('./components/blogs/SingleBlog').default,
         props: true
     },
   ]
@@ -68,7 +74,8 @@ window.Fire = Fire
 
 
 // Components
-Vue.component('blog-component', require('./components/BlogComponent.vue').default);
+// Vue.component('home-container', require('./components/home/HomeContainer.vue').default);
+// Vue.component('blog-component', require('./components/BlogComponent.vue').default);
 
 
 

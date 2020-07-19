@@ -46,4 +46,13 @@ class BlogController extends Controller
 
         return response()->json($validated_data, 200);
     }
+
+    // Get Single Blog Article
+    public function getBlogArticle($id) {
+
+        // Get blog from DB
+        $blog = Blog::findOrFail($id);
+
+        return response()->json($blog, 200);
+    }
 }

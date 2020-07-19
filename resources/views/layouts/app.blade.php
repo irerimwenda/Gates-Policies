@@ -75,6 +75,11 @@
 
         <main class="py-4">
             @yield('content')
+
+            <!-- Vue Router -->
+            <router-view></router-view>
+            {{-- <router-view :key="$route.fullPath"></router-view> --}}
+            
         </main>
     </div>
 </body>
